@@ -26,6 +26,7 @@ headers = {
     'User-Agent':'Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
         }
 Bookid = re.findall('(\d+)',BookUrl)[0] 
+AlreadyDown = [FileName for FileName in os.listdir(FilePath)]
 #使用IDM下载
 def IdmDownLoad(DownloadUrl, Mp3Name):
     call([IdmPath, '/d',DownloadUrl,'/p',FilePath,'/f',Mp3Name,'/n'])
@@ -93,6 +94,9 @@ if 'yousheng' in BookUrl :
             pass
         else :
             continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
+            continue
         JsUrl = 'http://www.tingchina.com/play/yousheng/flash.asp?id=%s&inum=1&flei=%s&bookname=%s&filename=%s'%(Bookid, flei, bookname, filename)
         Response = requests.get(JsUrl, headers = headers)
         Html_doc = Response.text
@@ -109,6 +113,9 @@ elif 'pingshu' in BookUrl :
         if filename :
             pass
         else :
+            continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
             continue
         JsUrl = 'http://www.tingchina.com/play/pingshu/flash.asp?id=%s&inum=1&flei=%s&bookname=%s&filename=%s'%(Bookid,flei, bookname, filename)
         Response = requests.get(JsUrl, headers = headers)
@@ -127,6 +134,9 @@ elif 'xiqu' in BookUrl :
             pass
         else :
             continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
+            continue
         JsUrl = 'http://www.tingchina.com/play/xiqu/geturl.asp?id=%s&flei=%s&filename=%s'%(Bookid,flei,filename)
         Response = requests.get(JsUrl, headers = headers)
         Html_doc = Response.text
@@ -143,6 +153,9 @@ elif 'jiaoyu' in BookUrl :
         if filename :
             pass
         else :
+            continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
             continue
         JsUrl = 'http://www.tingchina.com/play/jiaoyu/geturl.asp?id=%s&bookname=%s&filename=%s'%(Bookid, bookname, filename)
         Response = requests.get(JsUrl, headers = headers)
@@ -161,6 +174,9 @@ elif 'erge' in BookUrl :
             pass
         else :
             continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
+            continue
         JsUrl = 'http://www.tingchina.com/play/erge/geturl.asp?id=%s&bookname=%s&filename=%s'%(Bookid, bookname, filename)
         Response = requests.get(JsUrl, headers = headers)
         Html_doc = Response.text
@@ -178,6 +194,9 @@ elif 'xiangsheng' in BookUrl :
             pass
         else :
             continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
+            continue
         JsUrl = 'http://www.tingchina.com/play/xiangsheng/flash.asp?id=%s&filename=%s/%s'%(Bookid,bookname,filename)
         Response = requests.get(JsUrl, headers = headers)
         Html_doc = Response.text
@@ -185,6 +204,7 @@ elif 'xiangsheng' in BookUrl :
         DownUrl = 'http://t44.tingchina.com/xiangsheng/%s/%s?key=%s'%(bookname, filename, Downkey)
         IdmDownLoad(DownUrl, filename)
         time.sleep(2)
+        
 elif 'xiaohua' in BookUrl :
     print('正在抓取笑话分类……')
     bookname = Getbookname(BookUrl)
@@ -193,6 +213,9 @@ elif 'xiaohua' in BookUrl :
         if filename :
             pass
         else :
+            continue
+        if filename in AlreadyDown :
+            print('%s已经下载，本集跳过……'%filename)
             continue
     JsUrl = 'http://www.tingchina.com/play/xiaohua/geturl.asp?id=%s&bookname=%s&filename=%s'%(Bookid, bookname, filename)
     Response = requests.get(JsUrl, headers = headers)
